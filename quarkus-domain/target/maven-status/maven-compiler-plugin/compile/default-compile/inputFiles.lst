@@ -1,0 +1,5 @@
+C:\Users\Zupper\Documents\Estudos\quarkus-kafka\quarkus-domain\src\main\java\br\com\pfaa\quarkusstudy\domain\adapter\ProductAdapter.java
+C:\Users\Zupper\Documents\Estudos\quarkus-kafka\quarkus-domain\src\main\java\br\com\pfaa\quarkusstudy\domain\exception\EntityNotFoundException.java
+C:\Users\Zupper\Documents\Estudos\quarkus-kafka\quarkus-domain\src\main\java\br\com\pfaa\quarkusstudy\domain\port\driven\IProductRespositoryDrivenPort.java
+C:\Users\Zupper\Documents\Estudos\quarkus-kafka\quarkus-domain\src\main\java\br\com\pfaa\quarkusstudy\domain\entity\Product.java
+C:\Users\Zupper\Documents\Estudos\quarkus-kafka\quarkus-domain\src\main\java\br\com\pfaa\quarkusstudy\domain\port\driver\IProductDriverPort.java

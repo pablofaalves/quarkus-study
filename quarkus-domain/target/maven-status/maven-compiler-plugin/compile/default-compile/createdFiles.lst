@@ -1,0 +1,6 @@
+br\com\pfaa\quarkusstudy\domain\exception\EntityNotFoundException.class
+br\com\pfaa\quarkusstudy\domain\entity\Product$ProductBuilder.class
+br\com\pfaa\quarkusstudy\domain\entity\Product.class
+br\com\pfaa\quarkusstudy\domain\adapter\ProductAdapter.class
+br\com\pfaa\quarkusstudy\domain\port\driven\IProductRespositoryDrivenPort.class
+br\com\pfaa\quarkusstudy\domain\port\driver\IProductDriverPort.class

@@ -1,0 +1,3 @@
+br\com\pfaa\quarkusstudy\application\config\ModelMapperConfig.class
+br\com\pfaa\quarkusstudy\application\config\QuarkusConfig.class
+META-INF\panache-archive.marker
