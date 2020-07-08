@@ -29,6 +29,13 @@
             <artifactId>quarkus-arc</artifactId>
             <version>${quarkus.platform.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy</artifactId>
+            <version>${quarkus.platform.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

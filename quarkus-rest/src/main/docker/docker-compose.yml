@@ -1,0 +1,35 @@
+version: '3.8' #versão do docker-compose file
+
+services: #declaração de serviços a serem criados
+  postgres: #nome do serviço que irá executar o postgres
+    image: postgres:latest #nome da imagem : versão da imagem
+    container_name: postgres_container #nome do container o qual o serviço irá alocar para execução
+    volumes: #decla os volumes utilizados pelo container
+      - postgres_data:/var/lib/postgresql/data
+    environment: #declara as variaveis de ambiente necessárias para execução do container
+      - POSTGRES_DB=products_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports: #mapeia as portas host:container
+      - 5432:5432
+
+  quarkus: #nome do serviço que irá executar o Quarkus
+    container_name: quarkus_container
+    image: quarkus-compose:v1
+    build: #a imagem será criada a partir de um dockerfile
+      context: ../../../ #declara o diretorio/URL onde será executado o build. Nesse caso, o contexto será a partir da pasta ../quarkus-rest
+      dockerfile: src/main/docker/Dockerfile.jvm #localizacao do dockerfile para o build da imagem
+    #links: #faz uma ligação de rede com o serviço do postgres
+     # - postgres
+    ports: #mapeia a porta 80 do host com a porta 8080 do container
+      - 80:8080
+    depends_on: #define que esse serviço depende do serviço do postgres para inicializar
+      - postgres
+    environment: #mapeia o host do postgres_container na variavel de ambiente DB_HOST utilizada para definir o host do banco de dados na aplicação
+      - DB_HOST=postgres_container
+    restart: always #sempre reinicia o container
+    #restart: on-failure - apenas em caso de código de saída diferente de sucesso
+    #restart: unless-stopped - não reinicia apenas caso ele seja parado
+
+volumes: # Definie volumes para armazenamento de dados fora do container
+  postgres_data: # nome do volume que é utilizado pelo service do postgres

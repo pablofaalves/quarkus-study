@@ -1,3 +1,7 @@
 br\com\pfaa\quarkusstudy\application\config\ModelMapperConfig.class
-br\com\pfaa\quarkusstudy\application\config\QuarkusConfig.class
+br\com\pfaa\quarkusstudy\application\handler\ThrowableExceptionHandler.class
+br\com\pfaa\quarkusstudy\application\handler\ApplicationExceptionHandler.class
 META-INF\panache-archive.marker
+br\com\pfaa\quarkusstudy\application\handler\response\ExceptionHandlerResponseDto$ExceptionHandlerResponseDtoBuilder.class
+br\com\pfaa\quarkusstudy\application\handler\response\ExceptionHandlerResponseDto.class
+br\com\pfaa\quarkusstudy\application\config\QuarkusConfig.class

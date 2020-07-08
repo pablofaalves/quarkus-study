@@ -26,12 +26,14 @@ public class ProductPanacheEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Name cannot be null")
     @NotEmpty(message = "Name cannot be empty")
-    @Max(value = 50, message = "Name is too long")
+    @Size(max = 50, message = "Name is too long")
     private String name;
 
+    @NotNull(message = "Price cannot be null")
     @DecimalMin(value = "0.0", inclusive = false)
-    @Digits(integer=3, fraction=2)
+    @Digits(integer=8, fraction=2)
     private BigDecimal price;
 
     @CreationTimestamp

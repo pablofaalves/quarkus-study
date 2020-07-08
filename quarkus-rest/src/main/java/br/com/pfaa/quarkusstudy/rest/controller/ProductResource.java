@@ -1,11 +1,9 @@
 package br.com.pfaa.quarkusstudy.rest.controller;
 
 import br.com.pfaa.quarkusstudy.domain.entity.Product;
-import br.com.pfaa.quarkusstudy.domain.port.driver.IProductDriverPort;
+import br.com.pfaa.quarkusstudy.domain.port.driver.IProductUseCase;
 import br.com.pfaa.quarkusstudy.rest.dto.request.ProductCreationDto;
 import br.com.pfaa.quarkusstudy.rest.dto.response.ProductResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.modelmapper.ModelMapper;
 
@@ -13,39 +11,40 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
+@Valid
 @Path("/products/v1")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
     @Inject
-    IProductDriverPort productDriverPort;
+    IProductUseCase productDriverPort;
 
     @Inject
     ModelMapper modelMapper;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getProducts() {
         return Response.ok().entity(productDriverPort.findAll().stream()
                 .map(entity -> modelMapper.map(entity, ProductResponseDto.class))
-                .collect(Collectors.toList())).build();
+                .collect(Collectors.toList()))
+                .build();
     }
 
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ProductResponseDto getProduct(@PathParam("id") Long productId) {
-        return modelMapper.map(productDriverPort.findById(productId),
-                ProductResponseDto.class);
+    public Response getProduct(@PathParam("id") Long productId) {
+        return Response.ok()
+                .entity(modelMapper.map(productDriverPort.findById(productId),
+                        ProductResponseDto.class))
+                .build();
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response postProduct(@Valid ProductCreationDto productBody,
-                                @Context UriInfo uriInfo ) {
+                                @Context UriInfo uriInfo) {
 
         Product product = productDriverPort.create(modelMapper.map(productBody, Product.class));
 
@@ -57,11 +56,8 @@ public class ProductResource {
 
     @PUT
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Valid
     public Response putProduct(@PathParam("id") Long productId,
-                                         ProductCreationDto productBody) {
+                               @Valid ProductCreationDto productBody) {
         Product product = modelMapper.map(productBody, Product.class);
         product.setId(productId);
 
@@ -72,8 +68,6 @@ public class ProductResource {
 
     @DELETE
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteProduct(@PathParam("id") Long productId) {
         productDriverPort.delete(productId);
 

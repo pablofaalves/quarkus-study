@@ -2,17 +2,16 @@ package br.com.pfaa.quarkusstudy.domain.adapter;
 
 import br.com.pfaa.quarkusstudy.domain.entity.Product;
 import br.com.pfaa.quarkusstudy.domain.exception.EntityNotFoundException;
-import br.com.pfaa.quarkusstudy.domain.port.driven.IProductRespositoryDrivenPort;
-import br.com.pfaa.quarkusstudy.domain.port.driver.IProductDriverPort;
-import lombok.AllArgsConstructor;
+import br.com.pfaa.quarkusstudy.domain.port.driven.IProductRespositoryPort;
+import br.com.pfaa.quarkusstudy.domain.port.driver.IProductUseCase;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
-@AllArgsConstructor
-public class ProductAdapter implements IProductDriverPort {
+@RequiredArgsConstructor
+public class ProductAdapter implements IProductUseCase {
 
-    private final IProductRespositoryDrivenPort repositoryPort;
+    private final IProductRespositoryPort repositoryPort;
 
     @Override
     public Product findById(final Long productId) {
@@ -39,7 +38,7 @@ public class ProductAdapter implements IProductDriverPort {
     public void delete(final Long productId) {
         Boolean isDeleted = repositoryPort.delete(productId);
         if (!isDeleted) {
-            new EntityNotFoundException(productId,
+            throw new EntityNotFoundException(productId,
                     Product.class.getSimpleName());
         }
     }

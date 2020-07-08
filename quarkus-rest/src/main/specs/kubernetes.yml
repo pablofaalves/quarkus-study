@@ -1,0 +1,107 @@
+---
+apiVersion: "v1"
+kind: "ServiceAccount"
+metadata:
+  annotations:
+    app.quarkus.io/vcs-url: "https://github.com/pablofaalves/quarkus-study.git"
+    app.quarkus.io/build-timestamp: "2020-07-04 - 16:54:06 +0000"
+    app.quarkus.io/commit-id: "d40455db63f2465b4279700ebee0758a466a8b20"
+  labels:
+    app.kubernetes.io/name: "quarkus-rest"
+    app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+  name: "quarkus-rest"
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  annotations:
+    app.quarkus.io/vcs-url: "https://github.com/pablofaalves/quarkus-study.git"
+    app.quarkus.io/build-timestamp: "2020-07-04 - 16:54:06 +0000"
+    app.quarkus.io/commit-id: "d40455db63f2465b4279700ebee0758a466a8b20"
+  labels:
+    app.kubernetes.io/name: "quarkus-rest"
+    app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+  name: "quarkus-rest"
+spec:
+  ports:
+  - name: "http"
+    port: 8080
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: "quarkus-rest"
+    app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+  type: "ClusterIP"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  annotations:
+    app.quarkus.io/vcs-url: "https://github.com/pablofaalves/quarkus-study.git"
+    app.quarkus.io/build-timestamp: "2020-07-04 - 16:54:06 +0000"
+    app.quarkus.io/commit-id: "d40455db63f2465b4279700ebee0758a466a8b20"
+  labels:
+    app.kubernetes.io/name: "quarkus-rest"
+    app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+  name: "quarkus-rest"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "quarkus-rest"
+      app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/vcs-url: "https://github.com/pablofaalves/quarkus-study.git"
+        app.quarkus.io/build-timestamp: "2020-07-04 - 16:54:06 +0000"
+        app.quarkus.io/commit-id: "d40455db63f2465b4279700ebee0758a466a8b20"
+      labels:
+        app.kubernetes.io/name: "quarkus-rest"
+        app.kubernetes.io/version: "1.0.0-SNAPSHOT"
+    spec:
+      containers:
+      - env:
+        - name: "KUBERNETES_NAMESPACE"
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.namespace"
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: POSTGRES_PASSWORD
+        - name: DB_HOST
+          value: postgres.default
+        image: "pablofaalves/quarkus"
+        imagePullPolicy: "IfNotPresent"
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/health/live"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 0
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: "quarkus-rest"
+        ports:
+        - containerPort: 8080
+          name: "http"
+          protocol: "TCP"
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: "/health/ready"
+            port: 8080
+            scheme: "HTTP"
+          initialDelaySeconds: 0
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 10
+      serviceAccount: "quarkus-rest"
